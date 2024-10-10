@@ -134,7 +134,7 @@ const Header = ({ unit, setUnit }) => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("userInfo");
     navigate(`/login`);
   };
 

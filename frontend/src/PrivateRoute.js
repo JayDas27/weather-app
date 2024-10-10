@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
-    localStorage.getItem("token") !== null
+    localStorage.getItem("userInfo") !== null
   );
 
   // If authorized, return an outlet that will render child elements

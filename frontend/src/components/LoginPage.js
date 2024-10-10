@@ -12,8 +12,8 @@ const LoginPage = () => {
 
   // Function to check if the user is authorized
   const isAuthorized = () => {
-    const token = localStorage.getItem("token");
-    return token !== null;
+    const userInfo = localStorage.getItem("userInfo");
+    return userInfo !== null;
   };
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const LoginPage = () => {
       const res = response.data;
 
       if (res.message === "Authorized") {
-        localStorage.setItem("token", res.token);
+        localStorage.setItem("userInfo", JSON.stringify(res.data));
         navigate("/");
       } else {
         alert(res.message);
