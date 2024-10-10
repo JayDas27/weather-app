@@ -76,7 +76,7 @@ const Header = ({ unit, setUnit }) => {
       })
       .catch((err) => {
         console.log(err.message);
-        // handleLogout();
+        handleLogout();
       });
   };
 

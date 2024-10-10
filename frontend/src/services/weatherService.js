@@ -12,23 +12,13 @@ const WEATHER_DATA_BASE_URL = "http://api.weatherapi.com/v1";
 
 export const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-// Include JWT token in API request headers
-const config = {
-  headers: {
-    Authorization: `Bearer ${userInfo?.token}`,
-  },
-};
-
 export const userLogin = async (payload) => {
   return axios.post(`${BASE_URL}/member/login`, payload);
 };
 
 export const getCurrentWeather = async (lat, lon) => {
   return axios.get(
-    `${WEATHER_DATA_BASE_URL}/current.json?key=${API_KEY}&q=${lat},${lon}`,
-    config
+    `${WEATHER_DATA_BASE_URL}/current.json?key=${API_KEY}&q=${lat},${lon}`
   );
 };
 
@@ -58,10 +48,28 @@ export const searchCitySuggestions = async (query) => {
 };
 
 export const fetchCities = async () => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+  // Include JWT token in API request headers
+  const config = {
+    headers: {
+      Authorization: `Bearer ${userInfo?.token}`,
+    },
+  };
+
   return axios.get(`${BASE_URL}/city/getRecentSearchedCity`, config);
 };
 
 export const postRecentCities = async (payload) => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+  // Include JWT token in API request headers
+  const config = {
+    headers: {
+      Authorization: `Bearer ${userInfo?.token}`,
+    },
+  };
+
   return axios.post(`${BASE_URL}/city/saveRecentSearchedCity`, payload, config);
 };
 
