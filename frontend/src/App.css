@@ -1,0 +1,71 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  background-color: #f0f4f8;
+  color: #333;
+}
+
+.weather-app {
+  height: 100vh;
+  position: relative;
+  background-color: #0000008c;
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-image: url("./asset/rainy.jpg"); */
+  background-size: cover;
+  background-position: center;
+  filter: blur(1px);
+  z-index: -1;
+}
+
+/* Heading */
+h1,
+h2 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+p,
+.loading-text {
+  color: white;
+}
+
+.loading-text {
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 2rem;
+}
+
+ul li {
+  list-style: none;
+}
+
+.error-message {
+  color: #ff6161;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .weather-app {
+    height: 100%;
+    padding-bottom: 2rem;
+  }
+
+  .background-image {
+    position: fixed;
+  }
+}

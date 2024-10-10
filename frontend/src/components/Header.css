@@ -1,0 +1,161 @@
+.header {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  padding: 1.5rem;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  margin: auto;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.button-container {
+  display: flex;
+}
+
+.unit-toggle {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.toggle-label {
+  font-size: 1rem;
+  margin: 0 0.5rem;
+}
+
+.toggle-switch {
+  width: 40px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50px;
+  position: relative;
+  cursor: pointer;
+}
+
+.toggle-circle {
+  width: 18px;
+  height: 18px;
+  background-color: #007bff;
+  border-radius: 50%;
+  position: absolute;
+  top: 1px;
+  transition: transform 0.3s ease;
+}
+
+.toggle-circle.left {
+  transform: translateX(2px);
+}
+
+.toggle-circle.right {
+  transform: translateX(20px);
+}
+
+.city-search-container {
+  position: relative;
+  width: 300px;
+}
+
+.city-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.city-input:focus {
+  border-color: #007bff;
+}
+
+.city-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  padding: 0.5rem;
+  list-style-type: none;
+}
+
+.city-item {
+  color: black;
+  cursor: pointer;
+  display: flex;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  background-color: #03a9f480;
+  border-radius: 1rem;
+  margin-bottom: 0.2rem;
+  display: flex;
+  font-weight: 500;
+}
+
+.city-item:hover {
+  background-color: #03a9f4;
+}
+
+.city-item.no-results {
+  color: #888;
+  cursor: default;
+}
+
+.recent-searches {
+  color: black;
+  padding: 0.5rem;
+}
+
+.recent-searches h3 {
+  margin-bottom: 0.5rem;
+}
+
+.recent-searches ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.recent-searches li {
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  background-color: #ffeb3b7a;
+  border-radius: 1rem;
+  margin-bottom: 0.2rem;
+  display: flex;
+  font-weight: 500;
+}
+
+.recent-searches li:hover {
+  background-color: #ffeb3b;
+}
+
+@media (max-width: 768px) {
+  .header {
+    position: static;
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: column-reverse;
+    padding-left: 2rem;
+  }
+}

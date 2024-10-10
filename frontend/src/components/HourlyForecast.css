@@ -1,0 +1,39 @@
+.hourly-forecast-container {
+  display: grid;
+  justify-items: start;
+  margin-top: 2rem;
+  border-top: 2px solid white;
+  padding-top: 2rem;
+}
+
+.hourly-forecast-list {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+  width: 100%;
+  justify-items: center;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f0f0f0;
+  padding-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+.hourly-forecast-list li {
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 5px;
+  display: grid;
+}
+
+.hourly-forecast-list li.active {
+  background-color: #0000007d;
+}
+
+.hourly-forecast-list li img {
+  width: 60px;
+  height: 60px;
+}
