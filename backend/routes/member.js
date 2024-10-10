@@ -76,19 +76,22 @@ router.post("/register", authenticateToken, async (req, res) => {
       // const message = "Failed to create user";
       // res.render("index", { title: "Registration Error", message });
 
-      // res.send({
-      //   message,
-      //   status: 200,
-      // });
-
       res.send(error.details);
     } else {
-      const user = await User.findOne({
+      const existingUser = await User.findOne({
         username: req.body.username,
       });
 
-      if (user) {
-        const message = "Duplicate username";
+      const createdBy = await User.findOne({
+        _id: req.body.createdBy,
+      });
+
+      if (existingUser || createdBy.role !== "admin") {
+        const message =
+          createdBy.role !== "admin"
+            ? "You don't have admin permission to create user."
+            : "Duplicate username";
+
         res.send({
           message,
           status: 200,
