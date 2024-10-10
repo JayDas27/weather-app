@@ -9,14 +9,15 @@ import thunderstorm from "../asset/thunderstorm.jpg";
 const API_KEY = "9a40df9b58e54be78ae64239240710";
 const BASE_URL = "http://localhost:3200";
 const WEATHER_DATA_BASE_URL = "http://api.weatherapi.com/v1";
-const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
 export const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
 // Include JWT token in API request headers
 const config = {
   headers: {
-    Authorization: `Bearer ${userInfo.token}`,
+    Authorization: `Bearer ${userInfo?.token}`,
   },
 };
 
