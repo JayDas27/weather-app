@@ -61,6 +61,10 @@ export const fetchCities = async () => {
   return axios.get(`${BASE_URL}/city/getRecentSearchedCity`, config);
 };
 
+export const postRecentCities = async (payload) => {
+  return axios.post(`${BASE_URL}/city/saveRecentSearchedCity`, payload, config);
+};
+
 export const formatTime = (timeString) => {
   const date = new Date(timeString);
   return date

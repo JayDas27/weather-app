@@ -12,7 +12,6 @@ const Details = ({ unit, setWeatherBG }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    console.log(unit, setWeatherBG);
     searchCityWeather(city)
       .then((response) => {
         setWeather(response.data);

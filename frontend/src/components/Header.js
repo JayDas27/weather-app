@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { fetchCities, searchCitySuggestions } from "../services/weatherService";
+import {
+  fetchCities,
+  postRecentCities,
+  searchCitySuggestions,
+} from "../services/weatherService";
 import "../App.css";
 import "./Header.css";
 
@@ -19,24 +23,25 @@ const Header = ({ unit, setUnit }) => {
     // Load recent searches from localStorage on component mount
     const storedSearches =
       JSON.parse(localStorage.getItem("recentSearches")) || [];
-    setRecentSearches(storedSearches);
 
-    // if (storedSearches.length) {
-    //   setRecentSearches(storedSearches);
-    // } else {
-    //   fetchCities()
-    //     .then((response) => {
-    //       if (response.status === 200) {
-    //         console.log(response.data);
-    //         // localStorage.setItem("recentSearches", response.data);
-    //         // setRecentSearches(response.data);
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log(err.message);
-    //       handleLogout();
-    //     });
-    // }
+    if (storedSearches.length) {
+      setRecentSearches(storedSearches);
+    } else {
+      fetchCities()
+        .then((response) => {
+          if (response.status === 200) {
+            localStorage.setItem(
+              "recentSearches",
+              JSON.stringify(response.data)
+            );
+            setRecentSearches(response.data);
+          }
+        })
+        .catch((err) => {
+          console.log(err.message);
+          handleLogout();
+        });
+    }
 
     // if (!location.pathname.split("/details/")[1]) {
     //   setCity("");
@@ -51,17 +56,28 @@ const Header = ({ unit, setUnit }) => {
     setDropdownVisible(false);
     setCity("");
 
-    // Store successful search to recent searches
-    let updatedSearches = [selectedCity, ...recentSearches];
-    updatedSearches = [...new Set(updatedSearches)]; // Remove duplicates
-    if (updatedSearches.length > 10)
-      updatedSearches = updatedSearches.slice(0, 10); // Keep only last 10
+    const payload = {
+      cityName: selectedCity,
+      date: new Date(),
+    };
 
-    localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
-    setRecentSearches(updatedSearches);
+    postRecentCities(payload)
+      .then((response) => {
+        if (response.status === 200) {
+          const res = response.data.data;
 
-    // Navigate to details page with the selected city
-    navigate(`/details/${selectedCity}`);
+          // Store successful search to recent searches
+          localStorage.setItem("recentSearches", JSON.stringify(res));
+          setRecentSearches(res);
+
+          // Navigate to details page with the selected city
+          navigate(`/details/${selectedCity}`);
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+        // handleLogout();
+      });
   };
 
   // Debounce function to delay API call
@@ -156,9 +172,9 @@ const Header = ({ unit, setUnit }) => {
                     <li
                       className="city-item"
                       key={index}
-                      onClick={() => handleSearch(search)}
+                      onClick={() => handleSearch(search.cityName)}
                     >
-                      {search}
+                      {search.cityName}
                     </li>
                   ))}
                 </ul>

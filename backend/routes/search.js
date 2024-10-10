@@ -15,6 +15,30 @@ const citySchema = {
 
 const City = mongoose.model("City", citySchema);
 
+const citiesAggregate = [
+  {
+    $group: {
+      _id: "$cityName", // Grouping by the city name (or unique identifier)
+      latestEntry: { $max: "$date" }, // Getting the latest date for each city
+    },
+  },
+  {
+    $sort: {
+      latestEntry: -1, // Sort by latest entry in descending order
+    },
+  },
+  {
+    $limit: 10, // Limit to the last 10 cities
+  },
+  {
+    $project: {
+      _id: 0, // Exclude the _id field from the result
+      cityName: "$_id", // Include the city name
+      latestEntry: 1, // Include the latest entry date if necessary
+    },
+  },
+];
+
 // Connect to the database when the server starts
 connectDB();
 
@@ -30,9 +54,11 @@ router.post("/saveRecentSearchedCity", authenticateToken, async (req, res) => {
       const { cityName } = req.body;
       const city = new City({ cityName, date: new Date() });
       await city.save();
+      const cities = await City.aggregate(citiesAggregate);
       res.send({
         status: 200,
         message: "City saved successfully.",
+        data: cities,
       });
     }
   } catch (err) {
@@ -49,30 +75,7 @@ router.post("/saveRecentSearchedCity", authenticateToken, async (req, res) => {
 // GET route to fetch last 10 searched cities
 router.get("/getRecentSearchedCity", authenticateToken, async (req, res) => {
   try {
-    const cities = await City.aggregate([
-      {
-        $group: {
-          _id: "$cityName", // Grouping by the city name (or unique identifier)
-          latestEntry: { $max: "$date" }, // Getting the latest date for each city
-        },
-      },
-      {
-        $sort: {
-          latestEntry: -1, // Sort by latest entry in descending order
-        },
-      },
-      {
-        $limit: 10, // Limit to the last 10 cities
-      },
-      {
-        $project: {
-          _id: 0, // Exclude the _id field from the result
-          name: "$_id", // Include the city name
-          latestEntry: 1, // Include the latest entry date if necessary
-        },
-      },
-    ]);
-
+    const cities = await City.aggregate(citiesAggregate);
     res.json(cities);
   } catch (error) {
     console.error(error);

@@ -35,7 +35,7 @@ app.use("/city", searchRouter);
 
 // Logger middleware
 function logger(req, res, next) {
-  console.log(req.originalUrl);
+  // console.log(req.originalUrl);
   next();
 }
 
