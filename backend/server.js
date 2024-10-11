@@ -1,59 +1,46 @@
 const cors = require("cors");
 const express = require("express");
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config();
 
 const CustomError = require("./utils/customError");
 const globalErrorHandler = require("./errorController");
+const memberRouter = require("./routes/member");
+const searchRouter = require("./routes/search");
 
 // Express app
 const app = express();
 
-// Allow requests from "http://localhost:3000"
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-);
+// Middlewares
+app.use(cors({ origin: "http://localhost:3000" })); // CORS setup
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(express.json()); // Parse JSON bodies
+
+// Logger middleware
+app.use((req, res, next) => {
+  // console.log(req.originalUrl);
+  next();
+});
 
 // Register view engine
 app.set("view engine", "ejs");
 
-//
-app.use(logger);
-
-// Get access to "body" in response
-app.use(express.urlencoded({ extended: true }));
-
-// Middleware
-app.use(express.json()); // To parse JSON bodies
-
-const memberRouter = require("./routes/member");
+// Register routes
 app.use("/member", memberRouter);
-
-const searchRouter = require("./routes/search");
 app.use("/city", searchRouter);
 
-// Logger middleware
-function logger(req, res, next) {
-  // console.log(req.originalUrl);
-  next();
-}
-
-// Showing error if the request URL is not correct
+// Handle all undefined routes
 app.all("*", (req, res, next) => {
-  const err = new CustomError(
-    `Can't find ${req.originalUrl} on the server!`,
-    404
-  );
-
-  next(err);
+  next(new CustomError(`Can't find ${req.originalUrl} on the server!`, 404));
 });
 
 // Error handler middleware
 app.use(globalErrorHandler);
 
 // Start the server
-const PORT = 3200;
+const PORT = process.env.PORT || 3200; // Enhanced flexibility for port
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = app;

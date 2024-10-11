@@ -27,4 +27,21 @@ const disconnectDB = async () => {
   console.log("MongoDB disconnected");
 };
 
-module.exports = { connectDB, disconnectDB };
+// Helper function to handle database connection and response
+const handleDatabaseOperation = async (operation, res) => {
+  try {
+    await connectDB();
+    const result = await operation();
+    return res.send(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      message: error.message,
+      status: error.status || 500,
+    });
+  } finally {
+    await disconnectDB();
+  }
+};
+
+module.exports = { connectDB, disconnectDB, handleDatabaseOperation };

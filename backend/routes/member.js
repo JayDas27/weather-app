@@ -1,8 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const { validateSignup } = require("../utils/validator");
-const { connectDB, disconnectDB } = require("../utils/db");
-
+const { handleDatabaseOperation } = require("../utils/db");
 const jwt = require("jsonwebtoken");
 const authenticateToken = require("../utils/authenticateToken");
 
@@ -12,19 +11,16 @@ const userSchema = {
   username: String,
   password: String,
   role: String,
+  createdBy: String,
 };
 
 const User = mongoose.model("User", userSchema);
 
-// Connect to the database when the server starts
-connectDB();
-
+// Route to handle user login
 router.post("/login", async (req, res) => {
-  try {
-    const user = await User.findOne({
-      username: req.body.username,
-      password: req.body.password,
-    });
+  handleDatabaseOperation(async () => {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username, password });
 
     if (user) {
       // Create JWT
@@ -36,38 +32,23 @@ router.post("/login", async (req, res) => {
         }
       );
 
-      console.log("Generated Token:", token);
-
       res.send({
         message: "Authorized",
         status: 200,
-        data: {
-          token,
-          username: user.username,
-          id: user._id,
-        },
+        data: { token, username: user.username, id: user._id },
       });
     } else {
-      const message =
-        "Access denied. Invalid username or password. Please check and try again.";
-      res.send({
-        message,
-        status: 401,
+      res.status(401).json({
+        message:
+          "Access denied. Invalid username or password. Please check and try again.",
       });
     }
-  } catch (err) {
-    res.send({
-      message: err.message,
-      status: err.status,
-    });
-  }
-  //  finally {
-  //   await disconnectDB();
-  // }
+  }, res);
 });
 
+// Route to handle user registration
 router.post("/register", authenticateToken, async (req, res) => {
-  try {
+  handleDatabaseOperation(async () => {
     const { error } = validateSignup(req.body);
 
     if (error) {
@@ -76,57 +57,40 @@ router.post("/register", authenticateToken, async (req, res) => {
       // const message = "Failed to create user";
       // res.render("index", { title: "Registration Error", message });
 
-      res.send(error.details);
+      res.status(400).json(error.details);
     } else {
-      const existingUser = await User.findOne({
-        username: req.body.username,
-      });
+      const { username, password, role, createdBy } = req.body;
 
-      const createdBy = await User.findOne({
-        _id: req.body.createdBy,
-      });
+      const existingUser = await User.findOne({ username });
+      const creator = await User.findOne({ _id: createdBy });
 
-      if (existingUser || createdBy.role !== "admin") {
+      if (existingUser || creator.role !== "admin") {
         const message =
-          createdBy.role !== "admin"
+          creator.role !== "admin"
             ? "You don't have admin permission to create user."
             : "Duplicate username";
-
-        res.send({
-          message,
-          status: 200,
-        });
+        res.status(200).json({ message, status: 200 });
       } else {
-        const newUser = new User({
-          username: req.body.username,
-          password: req.body.password,
-          role: req.body.role,
-        });
+        const newUser = new User({ username, password, role, createdBy });
 
         try {
           const user = await newUser.save();
-          res.send({
+          res.json({
             status: 200,
             message: "New user created successfully",
-            data: user,
+            data: {
+              id: user._id,
+              username: user.username,
+              role: user.role,
+              createdBy: user.createdBy,
+            },
           });
         } catch (error) {
-          res.send({
-            message: error.message,
-            status: 400,
-          });
+          res.status(400).json({ message: error.message, status: 400 });
         }
       }
     }
-  } catch (err) {
-    res.send({
-      message: err.message,
-      status: err.status,
-    });
-  }
-  //  finally {
-  //   await disconnectDB();
-  // }
+  }, res);
 });
 
 module.exports = router;
