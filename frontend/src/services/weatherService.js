@@ -84,19 +84,19 @@ export const formatTime = (timeString) => {
 export const getCurrentWeatherBgImage = (response) => {
   const value = response?.toLowerCase();
 
-  if (value.includes("sunny")) {
+  if (value?.includes("sunny")) {
     return sunny;
-  } else if (value.includes("cloudy")) {
+  } else if (value?.includes("cloudy")) {
     return cloudy;
   } else if (
-    value.includes("rain") ||
-    value.includes("drizzle") ||
-    value.includes("mist")
+    value?.includes("rain") ||
+    value?.includes("drizzle") ||
+    value?.includes("mist")
   ) {
     return rainy;
-  } else if (value.includes("snow")) {
+  } else if (value?.includes("snow")) {
     return winter;
-  } else if (value.includes("thunderstorm")) {
+  } else if (value?.includes("thunderstorm")) {
     return thunderstorm;
   } else {
     return cloudy;

@@ -13,8 +13,9 @@ const HourlyForecast = ({ unit }) => {
   const { city } = useParams(); // Get the city name from the route parameter
 
   const formatData = (response) => {
-    // Get current hour
-    const currentHour = new Date().getHours() + 1;
+    // Get current hour for the searched location
+    const currentHour =
+      new Date(response.data.location.localtime).getHours() + 1;
 
     // Filter the next 8 hours forecast
     const next8HoursForecast = response.data.forecast.forecastday[0].hour.slice(

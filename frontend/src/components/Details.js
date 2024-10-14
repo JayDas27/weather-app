@@ -14,6 +14,7 @@ const Details = ({ unit, setWeatherBG }) => {
   useEffect(() => {
     searchCityWeather(city)
       .then((response) => {
+        setError("");
         setWeather(response.data);
         setWeatherBG(response.data.current.condition.text);
       })
@@ -22,7 +23,8 @@ const Details = ({ unit, setWeatherBG }) => {
       });
   }, [city, setWeatherBG]); // Fetch weather data whenever the city changes
 
-  if (error) return <p className="error-message">{error}</p>;
+  if (error) return <p className="error-message details-error">{error}</p>;
+
   if (!weather) return <div className="loading-text">Loading...</div>;
 
   return (

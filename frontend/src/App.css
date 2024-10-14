@@ -22,7 +22,6 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-image: url("./asset/rainy.jpg"); */
   background-size: cover;
   background-position: center;
   filter: blur(1px);
@@ -54,8 +53,15 @@ ul li {
 .error-message {
   color: #ff6161;
   font-weight: bold;
-  font-size: 0.9rem;
-  margin-top: 5px;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+.details-error {
+  text-align: center;
+  background: white;
+  margin: 2rem;
+  border-radius: 3rem;
 }
 
 /* Responsive Design */

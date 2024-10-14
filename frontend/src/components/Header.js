@@ -14,10 +14,9 @@ const Header = ({ unit, setUnit }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [recentSearches, setRecentSearches] = useState([]);
-  // const [error, setError] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  // const location = useLocation();
 
   useEffect(() => {
     // Load recent searches from localStorage on component mount
@@ -42,10 +41,6 @@ const Header = ({ unit, setUnit }) => {
           handleLogout();
         });
     }
-
-    // if (!location.pathname.split("/details/")[1]) {
-    //   setCity("");
-    // }
   }, []);
 
   const handleInputClick = () => {
@@ -115,15 +110,14 @@ const Header = ({ unit, setUnit }) => {
           );
           setSuggestions(filtered);
           setDropdownVisible(true);
-          // setError("");
+          setError("");
         } else {
           setSuggestions([]);
-          setDropdownVisible(false);
-          // setError("Failed to fetch city suggestions.");
+          setError("Failed to fetch city suggestions.");
         }
       })
       .catch(() => {
-        // setError("Failed to fetch city suggestions.");
+        setError("Failed to fetch city suggestions.");
       });
   };
 
@@ -150,11 +144,13 @@ const Header = ({ unit, setUnit }) => {
           placeholder="Type a city name..."
         />
 
-        {/* {error && <p className="error-message">{error}</p>} */}
-
-        {dropdownVisible && suggestions.length > 0 && (
+        {city && dropdownVisible && (
           <>
             <ul className="city-dropdown">
+              {error && !suggestions.length && city && (
+                <p className="error-message">{error}</p>
+              )}
+
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}
