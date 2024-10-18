@@ -30,6 +30,45 @@ This is a weather forecasting application that provides users with real-time wea
 ### Steps
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/JayDas27/weather-app.git
    ```
+
+2. Navigate into the project directory:
+
+   ```bash
+   cd weather-app
+   ```
+
+3. Install frontend dependencies:
+
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+4. Install backend dependencies:
+
+   ```bash
+   cd backend
+   npm install
+   ```
+
+5. Set up your MongoDB database. Update the connection string in backend/config/db.js.
+6. Start the backend server:
+
+   ```bash
+   npm run devStart
+   ```
+
+7. Start the frontend application:
+
+   ```bash
+   npm start
+   ```
+
+8. Usage
+
+- Open your browser and navigate to http://localhost:3000 to access the application.
+- Enter a location in the search bar to get the current weather forecast.
