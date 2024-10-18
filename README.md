@@ -17,14 +17,14 @@ This is a weather forecasting application that provides users with real-time wea
 - **Frontend:** React.js
 - **Backend:** Node.js
 - **Database:** MongoDB
-- **APIs:** OpenWeatherMap API
+- **APIs:** [weatherapi](https://www.weatherapi.com/my/)
 
 ## Installation
 
 ### Prerequisites
 
-- Node.js
-- MongoDB
+- [Node.js](https://nodejs.org/en/download/)
+- [MongoDB](https://www.mongodb.com/try/download/community)
 - npm
 
 ### Steps
@@ -55,7 +55,7 @@ This is a weather forecasting application that provides users with real-time wea
    npm install
    ```
 
-5. Set up your MongoDB database. Update the connection string in backend/config/db.js.
+5. Set up your MongoDB database. Update the connection string "DATABASE_URL" [backend/.env](backend/.env)
 6. Start the backend server:
 
    ```bash
@@ -68,7 +68,14 @@ This is a weather forecasting application that provides users with real-time wea
    npm start
    ```
 
-8. Usage
+8. Run test case for backend application:
 
-- Open your browser and navigate to http://localhost:3000 to access the application.
+   ```bash
+   cd backend
+   npx jest
+   ```
+
+9. Usage
+
+- Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to access the application.
 - Enter a location in the search bar to get the current weather forecast.
