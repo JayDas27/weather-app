@@ -35,7 +35,7 @@ router.post("/login", async (req, res) => {
       res.send({
         message: "Authorized",
         status: 200,
-        data: { token, username: user.username, id: user._id },
+        data: { id: user._id, username: user.username, role: user.role, token },
       });
     } else {
       res.status(401).json({

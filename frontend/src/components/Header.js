@@ -116,8 +116,8 @@ const Header = ({ unit, setUnit }) => {
           setError("Failed to fetch city suggestions.");
         }
       })
-      .catch(() => {
-        setError("Failed to fetch city suggestions.");
+      .catch((err) => {
+        console.log(err.message);
       });
   };
 
@@ -181,9 +181,9 @@ const Header = ({ unit, setUnit }) => {
       </div>
 
       <div className="button-container">
-        <div className="unit-toggle">
+        <div className="unit-toggle" onClick={handleUnitToggle}>
           <label className="toggle-label">°C</label>
-          <div className="toggle-switch" onClick={handleUnitToggle}>
+          <div className="toggle-switch">
             <div
               className={`toggle-circle ${unit === "F" ? "right" : "left"}`}
             ></div>
